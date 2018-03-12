@@ -1,0 +1,53 @@
+AWSTemplateFormatVersion : '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  AwesomeGoCalculator:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: go1.x
+      Handler: calculator
+      FunctionName: awesome-go-calculator
+      AutoPublishAlias: live
+      DeploymentPreference:
+        Type: AllAtOnce
+        Hooks:
+          PreTraffic: !Ref AwesomeGoCalculatorValidator
+      Events:
+          Add:
+            Type: Api
+            Properties:
+              Path: /
+              Method: GET
+  AwesomeGoCalculatorValidator:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: validate-go.handler
+      Policies:
+        - Version: "2012-10-17"
+          Statement:
+          - Effect: "Allow"
+            Action:
+              - "logs:CreateLogGroup"
+              - "logs:CreateLogStream"
+              - "logs:PutLogEvents"
+            Resource:
+              !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*'
+          - Effect: "Allow"
+            Action:
+              - "codedeploy:PutLifecycleEventHookExecutionStatus"
+            Resource:
+              !Sub 'arn:aws:codedeploy:${AWS::Region}:${AWS::AccountId}:deploymentgroup:${ServerlessDeploymentApplication}/*'
+        - Version: "2012-10-17"
+          Statement:
+          - Effect: "Allow"
+            Action:
+              - "lambda:InvokeFunction"
+            Resource: 
+                !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:awesome-go-calculator'
+      Runtime: nodejs6.10
+      FunctionName: 'CodeDeployHook_AwesomeGoCalculatorValidator'
+      DeploymentPreference:
+        Enabled: false
+      Environment:
+        Variables:
+          TestVersion: !Sub "${AwesomeGoCalculator.Version}"    

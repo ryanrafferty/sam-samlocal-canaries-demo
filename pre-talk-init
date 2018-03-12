@@ -1,0 +1,12 @@
+#!/bin/bash
+
+
+## Gerardo: Set this to an S3 bucket in your AWS Account
+BUCKET=sydney-summit-sam
+
+## Will use my bucket when I run the code, otherwise will use yours :-)
+# if [[ $USER -eq "adstrick" ]]; then
+# BUCKET=adams-artifacts
+# fi
+#
+export ARTIFACT_BUCKET=$BUCKET

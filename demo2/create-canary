@@ -1,0 +1,8 @@
+#!/bin/bash
+
+REST_API_ID=$(aws apigateway get-rest-apis | jq --raw-output '.items[] | select(.name=="awesome-calculator").id')
+
+aws apigateway create-deployment \
+    --canary-settings '{ "percentTraffic":50, "useStageCache":false }' \
+    --stage-name Prod \
+    --rest-api-id $REST_API_ID

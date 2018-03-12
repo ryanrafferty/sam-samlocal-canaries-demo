@@ -1,0 +1,31 @@
+
+
+# 0. Initialise
+Stack pre-deployed/ API gathered.
+2 terminals (deployments, show code).
+
+. ../pre-talk-init
+# SHOW LOG THAT IT WORKED
+
+# 1. Package
+
+aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file packaged.yaml
+
+# 2. Deploy
+
+aws cloudformation deploy --template-file ./packaged.yaml --stack-name awesome-calculator --capabilities CAPABILITY_IAM
+
+3. Get API URL
+
+./get-url
+#DON'T DISPLAY IT.
+
+# Browse
+# Wrong Result
+# Fix Code with mistake
+# Goto 1
+# FAIL :-(
+# Describe cloudformation events greped to show failure. aws cloudformation describe-stack-events --stack-name awesome-calculator
+# Browse (show API has not been updated)
+# Fix Code correctly
+# Goto 1
