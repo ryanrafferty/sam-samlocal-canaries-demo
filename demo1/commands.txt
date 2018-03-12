@@ -6,14 +6,18 @@
 #4) Docker running
 #5) Terminal open - Zoomed In.
 #6) Mobile
+#7) JS code is adding
+#8) Go code is adding
+#9) Non-mirror screen + Big one on top of laptop's
 
 
 # INITIALISE Bucket variable
 . ../pre-talk-init
 
+#Delete previos stack if any
 #Create Stack pre-deployed/ API gathered.
 aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file packaged.yaml
-aws cloudformation deploy --template-file ./packaged.yaml --stack-name awesome-calculator --capabilities CAPABILITY_IAM
+aws cloudformation deploy --template-file ./packaged.yaml --stack-name calculator --capabilities CAPABILITY_IAM
 
 # Get API Url
 ./get-url
@@ -29,7 +33,7 @@ aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_B
 
 # 2. Deploy
 
-aws cloudformation deploy --template-file ./packaged.yaml --stack-name awesome-calculator --capabilities CAPABILITY_IAM
+aws cloudformation deploy --template-file ./packaged.yaml --stack-name calculator --capabilities CAPABILITY_IAM
 
 # 3. -----while deploying --- show 2 commands and open 2nd temindal and show CODE -
 nano index.js
@@ -37,9 +41,9 @@ Ctrl + x
 
 
 # 3. Display Cfn rolled back event messages.
-# Describe cloudformation events greped to show failure. aws cloudformation describe-stack-events --stack-name awesome-calculator
+# Describe cloudformation events greped to show failure. aws cloudformation describe-stack-events --stack-name calculator
 
 
 # 4. Package and Deploy again.
 aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file packaged.yaml
-aws cloudformation deploy --template-file ./packaged.yaml --stack-name awesome-calculator --capabilities CAPABILITY_IAM
+aws cloudformation deploy --template-file ./packaged.yaml --stack-name calculator --capabilities CAPABILITY_IAM

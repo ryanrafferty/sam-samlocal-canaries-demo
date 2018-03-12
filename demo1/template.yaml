@@ -1,17 +1,17 @@
 AWSTemplateFormatVersion : '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Resources:
-  AwesomeCalculator:
+  Calculator:
     Type: AWS::Serverless::Function
     Properties:
       Runtime: nodejs6.10
       Handler: index.handler
-      FunctionName: awesome-calculator
+      FunctionName: calculator
       AutoPublishAlias: live
       DeploymentPreference:
         Type: AllAtOnce
         Hooks:
-          PreTraffic: !Ref AwesomeCalculatorValidator
+          PreTraffic: !Ref CalculatorValidator
       Events:
         Add:
           Type: Api
@@ -19,7 +19,7 @@ Resources:
             Path: /
             Method: GET
 
-  AwesomeCalculatorValidator:
+  CalculatorValidator:
     Type: AWS::Serverless::Function
     Properties:
       Handler: validate.handler
@@ -43,12 +43,12 @@ Resources:
           - Effect: "Allow"
             Action:
               - "lambda:InvokeFunction"
-            Resource: 
-                !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:awesome-calculator'
+            Resource:
+                !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:calculator'
       Runtime: nodejs6.10
-      FunctionName: 'CodeDeployHook_AwesomeCalculatorValidator'
+      FunctionName: 'CodeDeployHook_CalculatorValidator'
       DeploymentPreference:
         Enabled: false
       Environment:
         Variables:
-          TestVersion: !Sub "${AwesomeCalculator.Version}"          
+          TestVersion: !Sub "${Calculator.Version}"          

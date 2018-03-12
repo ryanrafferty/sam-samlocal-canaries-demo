@@ -38,11 +38,10 @@ GOOS=linux go build calculator.go
 
 sam package --template-file template-go.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file packaged.yaml
 
-sam deploy --template-file ./packaged.yaml --stack-name awesome-go-calculator --capabilities CAPABILITY_IAM
+sam deploy --template-file ./packaged.yaml --stack-name go-calculator --capabilities CAPABILITY_IAM
 
 
-#BACK TO SLIDE.
-
+#BACK TO SLIDES---------------
 
 # 9. Collect Details about API Gateway + Lambda Function
 
@@ -50,32 +49,33 @@ sam deploy --template-file ./packaged.yaml --stack-name awesome-go-calculator --
 
 # 10. Update API to use new function
 
-aws apigateway put-integration                                          \
-    --rest-api-id $API_ID                                               \
-    --resource-id $API_RESOURCE_ID                                      \
-    --http-method GET                                                   \
-    --type AWS_PROXY                                                    \
-    --integration-http-method POST                                      \
+
+aws apigateway put-integration               \
+    --rest-api-id $API_ID                    \
+    --resource-id $API_RESOURCE_ID           \
+    --http-method GET                        \
+    --type AWS_PROXY                         \
+    --integration-http-method POST           \
     --uri arn:aws:apigateway:ap-southeast-2:lambda:path/2015-03-31/functions/$LAMBDA_ALIAS_ARN/invocations
 
-aws lambda add-permission                                               \
-    --statement-id 1                                                    \
-    --function-name awesome-go-calculator                               \
-    --action "lambda:*"                                                 \
-    --principal "apigateway.amazonaws.com"                              \
-    --source-arn $METHOD_ARN                                            \
+aws lambda add-permission                    \
+    --statement-id 1                         \
+    --function-name go-calculator    \
+    --action "lambda:*"                      \
+    --principal "apigateway.amazonaws.com"   \
+    --source-arn $METHOD_ARN                 \
     --qualifier live
 
-aws apigateway create-deployment                                        \
-    --rest-api-id $API_ID                                               \
-    --stage-name Prod                                                   \
+aws apigateway create-deployment             \
+    --rest-api-id $API_ID                    \
+    --stage-name Prod                        \
     --canary-settings '{ "percentTraffic":50, "useStageCache":false }'
 
 # 12. Promote Canary
 
-aws apigateway update-stage                                              \
-    --rest-api-id "$API_ID"                                              \
-    --stage-name 'Prod'                                                  \
+aws apigateway update-stage                  \
+    --rest-api-id "$API_ID"                  \
+    --stage-name 'Prod'                      \
     --patch-operations '[{
         "op": "replace",
         "value": "0.0",

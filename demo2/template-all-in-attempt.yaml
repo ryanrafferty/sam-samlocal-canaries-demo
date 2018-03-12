@@ -1,37 +1,37 @@
 AWSTemplateFormatVersion : '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Resources:
-  AwesomeCalculator:
+  Calculator:
     Type: AWS::Serverless::Function
     Properties:
       Runtime: nodejs6.10
       Handler: index.handler
-      FunctionName: awesome-calculator
+      FunctionName: calculator
       AutoPublishAlias: live
       DeploymentPreference:
         Type: AllAtOnce
         Hooks:
-          PreTraffic: !Ref AwesomeCalculatorValidator
-      
-  AwesomeGoCalculator:
+          PreTraffic: !Ref CalculatorValidator
+
+  GoCalculator:
     Type: AWS::Serverless::Function
     Properties:
       Runtime: go1.x
       Handler: calculator
-      FunctionName: awesome-go-calculator
+      FunctionName: go-calculator
       AutoPublishAlias: live
       DeploymentPreference:
         Type: AllAtOnce
         Hooks:
-          PreTraffic: !Ref AwesomeGoCalculatorValidator
+          PreTraffic: !Ref GoCalculatorValidator
       Events:
         Add:
           Type: Api
           Properties:
             Path: /
             Method: GET
-            
-  AwesomeCalculatorValidator:
+
+  CalculatorValidator:
     Type: AWS::Serverless::Function
     Properties:
       Handler: validate.handler
@@ -55,17 +55,17 @@ Resources:
           - Effect: "Allow"
             Action:
               - "lambda:InvokeFunction"
-            Resource: 
-                !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:awesome-calculator'
+            Resource:
+                !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:calculator'
       Runtime: nodejs6.10
-      FunctionName: 'CodeDeployHook_AwesomeCalculatorValidator'
+      FunctionName: 'CodeDeployHook_CalculatorValidator'
       DeploymentPreference:
         Enabled: false
       Environment:
         Variables:
-          TestVersion: !Sub "${AwesomeCalculator.Version}"          
-  
-  AwesomeGoCalculatorValidator:
+          TestVersion: !Sub "${Calculator.Version}"
+
+  GoCalculatorValidator:
     Type: AWS::Serverless::Function
     Properties:
       Handler: validate-go.handler
@@ -89,12 +89,12 @@ Resources:
           - Effect: "Allow"
             Action:
               - "lambda:InvokeFunction"
-            Resource: 
-                !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:awesome-go-calculator'
+            Resource:
+                !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:go-calculator'
       Runtime: nodejs6.10
-      FunctionName: 'CodeDeployHook_AwesomeGoCalculatorValidator'
+      FunctionName: 'CodeDeployHook_GoCalculatorValidator'
       DeploymentPreference:
         Enabled: false
       Environment:
         Variables:
-          TestVersion: !Sub "${AwesomeGoCalculator.Version}"    
+          TestVersion: !Sub "${GoCalculator.Version}"
