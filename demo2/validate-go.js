@@ -7,7 +7,7 @@ const lambda = new aws.Lambda();
 // Payload to pass to the newly deployed lambda function
 const leftParam = 2;
 const rightParam = 8;
-const expectedResult = leftParam - rightParam;
+const expectedResult = leftParam * rightParam;
 
 const payload = {
     "resource": "/",
