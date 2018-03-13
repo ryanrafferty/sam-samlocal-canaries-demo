@@ -26,7 +26,7 @@ func HandleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (
 	left := queryParamAsNumber("left", request, 0)
 	right := queryParamAsNumber("right", request, 0)
 	result := left + right
-	return events.APIGatewayProxyResponse{200, make(map[string]string), strconv.FormatFloat(result, 'f', 6, 64), false}, nil
+	return events.APIGatewayProxyResponse{200, make(map[string]string), strconv.FormatInt(int64(result), 10), false}, nil
 }
 
 func main() {
