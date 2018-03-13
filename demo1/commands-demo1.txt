@@ -49,11 +49,16 @@ nano index.js
 Ctrl + o
 Ctrl + x
 
+#—— BACK TO SLIDES
 
 # 5. Display Cfn rolled back event messages.
 # Describe cloudformation events greped to show failure. 
 aws cloudformation describe-stack-events --stack-name calculator | grep rollback
 
+#—- Make a change: ADDITION.
+nano index.js
+Ctrl + o
+Ctrl + x
 
 # 6. Package and Deploy again.
 aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file packaged.yaml
