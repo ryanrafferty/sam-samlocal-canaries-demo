@@ -51,7 +51,8 @@ Ctrl + x
 
 
 # 5. Display Cfn rolled back event messages.
-# Describe cloudformation events greped to show failure. aws cloudformation describe-stack-events --stack-name calculator
+# Describe cloudformation events greped to show failure. 
+aws cloudformation describe-stack-events --stack-name calculator | grep rollback
 
 
 # 6. Package and Deploy again.
