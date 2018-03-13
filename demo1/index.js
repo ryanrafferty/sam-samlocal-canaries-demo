@@ -10,7 +10,7 @@ exports.handler = (event, context, callback) => {
         let left = queryParamAsNumber("left", event, 0);
         let right = queryParamAsNumber("right", event, 0);
 
-        let result = left + right;      // OOPS - this should be a '+' operation
+        let result = left * right;      
 
         callback(null, {
             statusCode: 200,

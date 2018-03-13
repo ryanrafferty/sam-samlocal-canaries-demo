@@ -25,7 +25,7 @@ func queryParamAsNumber(name string, event events.APIGatewayProxyRequest, defaul
 func HandleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	left := queryParamAsNumber("left", request, 0)
 	right := queryParamAsNumber("right", request, 0)
-	result := left * right
+	result := left + right
 	return events.APIGatewayProxyResponse{200, make(map[string]string), strconv.FormatFloat(result, 'f', 6, 64), false}, nil
 }
 
