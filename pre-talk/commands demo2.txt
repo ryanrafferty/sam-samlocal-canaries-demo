@@ -45,16 +45,16 @@ GOOS=linux go build calculator.go
 
 # 8. Package + Deploy new Function
 
-sam package --template-file template-go.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file packaged.yaml
+sam package --template-file template-go.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file ../temp/demo2-packaged.yaml
 
-sam deploy --template-file ./packaged.yaml --stack-name go-calculator --capabilities CAPABILITY_IAM
+sam deploy --template-file ../temp/demo2-packaged.yaml --stack-name go-calculator --capabilities CAPABILITY_IAM
 
 
 #BACK TO SLIDES---------------
 
 # 9. Collect Details about API Gateway + Lambda Function
 ## This is getting the Go Function ARN and saving it as an environment variable
-. ./prep
+. ./get-lambda-arn
 
 # 10. Update API to use new function
 
