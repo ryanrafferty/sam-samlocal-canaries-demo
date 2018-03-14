@@ -43,7 +43,8 @@ Ctrl + X
 GOOS=linux go build calculator.go
 
 #-----GENERATE EVENT + INVOKE + LOGS
-
+sam local generate-event api --method GET --resource "/" --path "/?left=4&right=2"
+sam local invoke "AwesomeGoCalculator" -e request.json
 
 
 
