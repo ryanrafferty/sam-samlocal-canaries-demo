@@ -17,6 +17,8 @@ echo "Artifact Bucket: $BUCKET"
 echo "Deleting existing Stack..."
 aws cloudformation delete-stack --stack-name calculator
 aws cloudformation delete-stack --stack-name go-calculator
+aws cloudformation wait stack-delete-complete --stack-name calculator
+aws cloudformation wait stack-delete-complete --stack-name go-calculator
 
 ## Step 1: Package + Deploy the API
 echo "Running initial Package + Deploy..."

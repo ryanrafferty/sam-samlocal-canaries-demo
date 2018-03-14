@@ -3,7 +3,7 @@ Resources:
   Calculator:
     Properties:
       AutoPublishAlias: live
-      CodeUri: s3://adams-artifacts/75cf5311814cf0625d316e0633f6fc1b
+      CodeUri: s3://adams-artifacts/6b077256cdaa160483ef846fc245398e
       DeploymentPreference:
         Hooks:
           PreTraffic:
@@ -21,7 +21,7 @@ Resources:
     Type: AWS::Serverless::Function
   CalculatorValidator:
     Properties:
-      CodeUri: s3://adams-artifacts/75cf5311814cf0625d316e0633f6fc1b
+      CodeUri: s3://adams-artifacts/6b077256cdaa160483ef846fc245398e
       DeploymentPreference:
         Enabled: false
       Environment:
