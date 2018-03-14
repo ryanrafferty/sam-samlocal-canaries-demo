@@ -8,46 +8,9 @@ Resources:
       Handler: calculator
       FunctionName: go-calculator
       AutoPublishAlias: live
-      DeploymentPreference:
-        Type: AllAtOnce
-        Hooks:
-          PreTraffic: !Ref GoCalculatorValidator
       Events:
           Add:
             Type: Api
             Properties:
               Path: /
               Method: GET
-  GoCalculatorValidator:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: validate-go.handler
-      Policies:
-        - Version: "2012-10-17"
-          Statement:
-          - Effect: "Allow"
-            Action:
-              - "logs:CreateLogGroup"
-              - "logs:CreateLogStream"
-              - "logs:PutLogEvents"
-            Resource:
-              !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*'
-          - Effect: "Allow"
-            Action:
-              - "codedeploy:PutLifecycleEventHookExecutionStatus"
-            Resource:
-              !Sub 'arn:aws:codedeploy:${AWS::Region}:${AWS::AccountId}:deploymentgroup:${ServerlessDeploymentApplication}/*'
-        - Version: "2012-10-17"
-          Statement:
-          - Effect: "Allow"
-            Action:
-              - "lambda:InvokeFunction"
-            Resource:
-                !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:go-calculator'
-      Runtime: nodejs6.10
-      FunctionName: 'CodeDeployHook_GoCalculatorValidator'
-      DeploymentPreference:
-        Enabled: false
-      Environment:
-        Variables:
-          TestVersion: !Sub "${GoCalculator.Version}"    
