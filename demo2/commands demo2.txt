@@ -10,7 +10,7 @@ sam local —help
 # show artefacts:
 ls
 
-#show code and template
+#show code
 nano calculator.go
 nano template-go.yaml
 
@@ -38,6 +38,7 @@ Ctrl + X
 #compile
 GOOS=linux go build calculator.go
 
+
 #-----GENERATE EVENT + INVOKE
 
 
@@ -46,16 +47,16 @@ GOOS=linux go build calculator.go
 
 # 8. Package + Deploy new Function
 
-sam package --template-file template-go.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file ../temp/demo2-packaged.yaml
+sam package --template-file template-go.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file packaged.yaml
 
-sam deploy --template-file ../temp/demo2-packaged.yaml --stack-name go-calculator --capabilities CAPABILITY_IAM
+sam deploy --template-file ./packaged.yaml --stack-name go-calculator --capabilities CAPABILITY_IAM
 
 
 #BACK TO SLIDES---------------
 
 # 9. Collect Details about API Gateway + Lambda Function
-## This is getting the Go Function ARN and saving it as an environment variable
-. ./get-lambda-arn
+
+. ./prep #Getting the AR
 
 # 10. Update API to use new function
 
