@@ -49,7 +49,6 @@ sam local invoke "AwesomeGoCalculator" -e request.json
 
 
 
-
 #----DEPLOY ----
 
 # 8. Package + Deploy new Function
