@@ -42,17 +42,30 @@ aws cloudformation deploy --template-file ./packaged.yaml --stack-name calculato
 
 # 3. -----while deploying --- show 2 commands and open 2nd temindal and show CODE -
 nano index.js
-Ctrl + x
+nano validator
+#mention I added some security mechanisims we'll discuss in a second.
 
-# 4. Make a change! SUBSTRACTION.
+# 4. ---When done: collect details about APIGW
+. ./get-api-id
+
+#5. Check code with Curl. Make a change! SUBSTRACTION.
+curl https://\$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=2
+
 nano index.js
 Ctrl + o
 Ctrl + x
 
-#—— BACK TO SLIDES
+aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file packaged.yaml
+aws cloudformation deploy --template-file ./packaged.yaml --stack-name calculator --capabilities CAPABILITY_IAM
+
+
+#—— BACK TO SLIDES to talk SAFETY
+
+# 5. Test app
+curl https://\$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=2
 
 # 5. Display Cfn rolled back event messages.
-# Describe cloudformation events greped to show failure. 
+# Describe cloudformation events greped to show failure.
 aws cloudformation describe-stack-events --stack-name calculator | grep rollback
 
 #—- Make a change: ADDITION.
