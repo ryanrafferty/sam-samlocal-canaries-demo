@@ -103,6 +103,4 @@ aws apigateway update-stage                                              \
 aws cloudformation delete-stack —-stack-name calculator
 aws cloudformation delete-stack --stack-name go-calculator
 # exit sam local start-api
-Ctrl + x
-ps -ef | grep start-api
-sudo kill -9 PID
+Ctrl + c

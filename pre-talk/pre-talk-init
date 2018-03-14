@@ -1,0 +1,50 @@
+#!/bin/bash
+
+
+## Gerardo: Set this to an S3 bucket in your AWS Account
+BUCKET=sydney-summit-sam
+
+# Will use my bucket when I run the code, otherwise will use yours :-)
+if [[ $USER == "adstrick" ]]; then
+    BUCKET=adams-artifacts
+fi
+
+export ARTIFACT_BUCKET=$BUCKET
+echo "Artifact Bucket: $BUCKET"
+
+
+## Step 0: Remove any existing CF stacks
+echo "Deleting existing Stack..."
+aws cloudformation delete-stack --stack-name calculator
+aws cloudformation delete-stack --stack-name go-calculator
+
+## Step 1: Package + Deploy the API
+echo "Running initial Package + Deploy..."
+cd ../demo1
+aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file ../temp/demo1-packaged.yaml
+aws cloudformation deploy --template-file ../temp/demo1-packaged.yaml --stack-name calculator --capabilities CAPABILITY_IAM
+cd ../pre-talk
+
+## Step 2: Get URL for the API
+echo "Retrieving the API URL..."
+REST_API_ID=$(aws apigateway get-rest-apis | jq --raw-output '.items[] | select(.name=="calculator").id')
+REST_URL="https://$REST_API_ID.execute-api.ap-southeast-2.amazonaws.com/Prod/"
+echo "API URL:"
+echo "$REST_URL"
+echo ""
+echo "Eg."
+echo "${REST_URL}?left=4&right=2"
+echo ""
+export API_URL=$REST_URL
+export ID=$REST_API_ID
+
+
+echo "curl https://\$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=2"
+
+
+# ## Step 3: Write the API 
+# UPDATED_URL="${REST_URL//\//\/}"
+# rm -f ../index.html
+# cp index.template.html ../
+# mv ../index.template.html ../index.html
+# sed -i -e "s/##APIURL##/$UPDATED_URL/g" ../index.html

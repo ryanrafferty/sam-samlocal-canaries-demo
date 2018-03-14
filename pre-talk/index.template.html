@@ -19,8 +19,7 @@
     </noscript>
 
     <div id="root">
-        API URL: <input type="text" name="apiUrl" id="apiUrl" style="background-color:black;color:black;width:20px;" onchange="onUrlChange()" />
-        &nbsp;<small><span id="apiUrlLabel" /></small>
+        <small>API URL: <span id="apiUrlLabel" /></small>
         <hr />
         <div style="display:block">
           <div id="leftDiv" style="float:left;align-content: center;padding:10px;margin:10px">
@@ -48,10 +47,14 @@
     </div>
 
     <script type="text/javascript">
+      var API_URL="##APIURL##";
+      var x = document.getElementById("apiUrlLabel");
+      if (x) x.innerHTML = strippedUrl(API_URL);
+
       function calculate() {
         var e = document.getElementById("apiUrl");
         var events = document.getElementById("events");
-        var url = (e.value || "").trim();
+        var url = API_URL;
         if (url.indexOf("https://") != 0) {
           events.innerHTML += "\nAPI URL not specified...";
         } else {
@@ -69,13 +72,13 @@
         var events = document.getElementById("events");
         events.innerHTML = "";
       }
-      function onUrlChange() {
-        var e = document.getElementById("apiUrl");
-        if (e) {
-          var x = document.getElementById("apiUrlLabel");
-          if (x) x.innerHTML = strippedUrl(e.value);
-        }
-      }
+      // function onUrlChange() {
+      //   var e = document.getElementById("apiUrl");
+      //   if (e) {
+      //     var x = document.getElementById("apiUrlLabel");
+      //     if (x) x.innerHTML = strippedUrl(e.value);
+      //   }
+      // }
       function strippedUrl(url) {
         var u = url || "?";
         var pos = u.indexOf("/");
