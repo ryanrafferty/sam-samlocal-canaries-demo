@@ -1,0 +1,41 @@
+#!/bin/bash
+
+REST_API_ID=$(aws apigateway get-rest-apis | jq --raw-output '.items[] | select(.name=="calculator").id')
+RESOURCE_ID=$(aws apigateway get-resources --rest-api-id $REST_API_ID |jq --raw-output '.items[] | select(.path=="/").id')
+
+ACCOUNT_NUMBER=$(aws sts get-caller-identity --output text --query 'Account')
+METHOD_ARN="arn:aws:execute-api:ap-southeast-2:$ACCOUNT_NUMBER:$REST_API_ID/*/GET/"
+GO_LAMBDA_ALIAS_ARN=$(aws lambda get-alias --function-name go-calculator --name live | jq --raw-output '.AliasArn')
+
+
+echo "REST API ID: $REST_API_ID"
+echo "RESOURCE ID: $RESOURCE_ID"
+echo " Method ARN: $METHOD_ARN"
+echo " LAMBDA ARN: $GO_LAMBDA_ALIAS_ARN"
+
+## Update the backend to use the Go lambda function
+echo "Integrating API Gateway"
+aws apigateway put-integration \
+    --rest-api-id $REST_API_ID \
+    --resource-id $RESOURCE_ID \
+    --http-method GET \
+    --type AWS_PROXY \
+    --integration-http-method POST \
+    --uri arn:aws:apigateway:ap-southeast-2:lambda:path/2015-03-31/functions/$GO_LAMBDA_ALIAS_ARN/invocations
+
+echo "Setting Invoke Permissions"
+    aws lambda add-permission \
+        --statement-id 1 \
+        --function-name go-calculator \
+        --action "lambda:*" \
+        --principal "apigateway.amazonaws.com" \
+        --source-arn $METHOD_ARN \
+        --qualifier live
+
+
+## Deploy it
+echo "Publishing Update to Canary"
+aws apigateway create-deployment \
+    --rest-api-id $REST_API_ID \
+    --stage-name Prod \
+    --canary-settings '{ "percentTraffic":50, "useStageCache":false }'

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+GO_LAMBDA_ALIAS_ARN=$(aws lambda get-alias --function-name go-calculator --name live | jq --raw-output '.AliasArn')
+export LAMBDA_ALIAS_ARN=$GO_LAMBDA_ALIAS_ARN
+
+echo " LAMBDA ARN: $GO_LAMBDA_ALIAS_ARN"
