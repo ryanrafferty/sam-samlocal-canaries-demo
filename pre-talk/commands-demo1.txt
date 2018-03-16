@@ -13,18 +13,8 @@
 #11) delete both packaged.yaml and calculator compiled binary.
 
 
-# INITIALISE Bucket variable
-. ../pre-talk-init
-
-#Delete previos stack if any
-#Create Stack pre-deployed/ API gathered.
-aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file packaged.yaml
-aws cloudformation deploy --template-file ./packaged.yaml --stack-name calculator --capabilities CAPABILITY_IAM
-
-# Get API Url
-./get-url
-#Paste URL on local app.
-
+# INITIALISE All environments!
+. ../pre-talk/pre-talk-init
 
 
 #-------------------------
