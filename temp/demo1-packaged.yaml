@@ -3,7 +3,7 @@ Resources:
   Calculator:
     Properties:
       AutoPublishAlias: live
-      CodeUri: s3://sydney-summit-sam/1542235323bcbcc9f760a1d02355d7f2
+      CodeUri: s3://sydney-summit-sam/45a101e813c37baaac60d51be0adf313
       DeploymentPreference:
         Hooks:
           PreTraffic:
@@ -21,7 +21,7 @@ Resources:
     Type: AWS::Serverless::Function
   CalculatorValidator:
     Properties:
-      CodeUri: s3://sydney-summit-sam/1542235323bcbcc9f760a1d02355d7f2
+      CodeUri: s3://sydney-summit-sam/45a101e813c37baaac60d51be0adf313
       DeploymentPreference:
         Enabled: false
       Environment:

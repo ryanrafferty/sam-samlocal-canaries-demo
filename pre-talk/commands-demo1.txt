@@ -40,7 +40,7 @@ nano validator
 . ./get-api-id
 
 #5. Check code with Curl. Make a change! SUBSTRACTION.
-curl https://\$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=2
+curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
 
 nano index.js
 Ctrl + o
@@ -53,7 +53,7 @@ aws cloudformation deploy --template-file ./packaged.yaml --stack-name calculato
 #—— BACK TO SLIDES to talk SAFETY
 
 # 5. Test app
-curl https://\$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=2
+curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
 
 # 5. Display Cfn rolled back event messages.
 # Describe cloudformation events greped to show failure.
