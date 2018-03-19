@@ -19,16 +19,17 @@
 
 #-------------------------
 #DEMO 1:
-#show local files.
+#show variable and local files.
+echo $ARTIFACT_BUCKET
 ls
 
 # 1. Package
 
-aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file packaged.yaml
+aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file ../temp/packaged.yaml
 
 # 2. Deploy
 
-aws cloudformation deploy --template-file ./packaged.yaml --stack-name calculator --capabilities CAPABILITY_IAM
+aws cloudformation deploy --template-file ../temp/packaged.yaml --stack-name calculator --capabilities CAPABILITY_IAM
 
 # 3. -----while deploying --- show 2 commands and open 2nd temindal and show CODE -
 nano index.js
