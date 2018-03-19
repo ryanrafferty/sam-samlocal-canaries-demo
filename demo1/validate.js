@@ -8,7 +8,6 @@ const lambda = new aws.Lambda();
 const leftParam = 1.25;
 const rightParam = 2.25;
 const expectedResultAdd = leftParam + rightParam;
-const expectedResultMUL = leftParam * rightParam;
 
 const payload = {
     "resource": "/",
@@ -77,7 +76,7 @@ exports.handler = (event, context, callback) => {
                     res = parseFloat(body);
                 }
 
-                testSuccess = (res === expectedResultAdd) || (res === expectedResultMUL);
+                testSuccess = (res === expectedResultAdd);
                 console.log("Expected:", expectedResult, ", Got:", res, ", Result:", testSuccess ? "PASS" : "FAIL");
             }).catch( err => {
                 console.log("Error when validating", err);

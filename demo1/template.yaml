@@ -52,21 +52,3 @@ Resources:
       Environment:
         Variables:
           TestVersion: !Sub "${Calculator.Version}"          
-
-  Calculator:
-    Type: AWS::Serverless::Function
-    Properties:
-      Runtime: nodejs6.10
-      Handler: index.handler
-      FunctionName: calculator
-      AutoPublishAlias: live
-      DeploymentPreference:
-        Type: AllAtOnce
-        Hooks:
-          PreTraffic: !Ref CalculatorValidator
-      Events:
-        Add:
-          Type: Api
-          Properties:
-            Path: /
-            Method: GET
