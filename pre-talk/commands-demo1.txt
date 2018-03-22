@@ -4,7 +4,7 @@
 #2) Everything closed.
 #3) Logitech app
 #4) Docker running
-#5) Terminal open - Zoomed In.
+#5) Terminal open on demo1 - Zoomed In. Open 2nd terminal on demo2!
 #6) Mobile
 #7) JS code is multiplying
 #8) Go code is adding
@@ -13,7 +13,7 @@
 #11) delete both packaged.yaml and calculator compiled binary.
 
 
-# INITIALISE All environments!
+# INITIALISE All environments! FROM DEMO1
 . ../pre-talk/pre-talk-init
 
 
@@ -32,8 +32,8 @@ aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_B
 aws cloudformation deploy --template-file ../temp/packaged.yaml --stack-name calculator --capabilities CAPABILITY_IAM
 
 # 3. -----while deploying --- show 2 commands and open 2nd temindal and show CODE -
-nano index.js
-nano validator
+index.js
+template OR validator
 #mention I added some security mechanisims we'll discuss in a second.
 
 # 4. ---When done: collect details about APIGW
@@ -42,6 +42,7 @@ nano validator
 #5. Check code with Curl. Make a change! SUBSTRACTION.
 curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
 
+MAKE A MISTAKE!!!
 nano index.js
 Ctrl + o
 Ctrl + x
@@ -58,6 +59,8 @@ curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
 # 5. Display Cfn rolled back event messages.
 # Describe cloudformation events greped to show failure.
 aws cloudformation describe-stack-events --stack-name calculator | grep rollback
+curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
+
 
 #—- Make a change: ADDITION.
 nano index.js

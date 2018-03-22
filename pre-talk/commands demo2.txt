@@ -42,9 +42,12 @@ Ctrl + X
 #compile
 GOOS=linux go build calculator.go
 
+CTRL + C!! to exit start-api
+
+
 #-----GENERATE EVENT + INVOKE + LOGS
 sam local generate-event api --method GET --resource "/" --path "/?left=4&right=2"
-sam local invoke "AwesomeGoCalculator" -e request.json
+sam local invoke "GoCalculator" -e request.json
 
 
 
@@ -77,7 +80,7 @@ aws apigateway put-integration                                          \
 
 aws lambda add-permission                                               \
     --statement-id 1                                                    \
-    --function-name awesome-go-calculator                               \
+    --function-name go-calculator                                       \
     --action "lambda:*"                                                 \
     --principal "apigateway.amazonaws.com"                              \
     --source-arn $METHOD_ARN                                            \
@@ -86,7 +89,13 @@ aws lambda add-permission                                               \
 aws apigateway create-deployment                                        \
     --rest-api-id $API_ID                                               \
     --stage-name Prod                                                   \
-    --canary-settings '{ "percentTraffic”:10, "useStageCache":false }'
+    --canary-settings '{ "percentTraffic": 10, "useStageCache":false}'
+
+
+#Test
+curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
+
+
 
 # 12. Promote Canary
 
@@ -108,7 +117,6 @@ aws apigateway update-stage                                              \
 #2 go function to adding
 #3 delete both packaged.yaml and calculator compiled binary.
 #4 delete both stacks
-aws cloudformation delete-stack —-stack-name calculator
+aws cloudformation delete-stack --stack-name calculator
 aws cloudformation delete-stack --stack-name go-calculator
 # exit sam local start-api
-Ctrl + c
