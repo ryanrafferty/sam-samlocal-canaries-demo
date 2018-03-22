@@ -1,0 +1,57 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  Calculator:
+    Properties:
+      AutoPublishAlias: live
+      CodeUri: s3://sydney-summit-sam/5b9958a0d4f855ead3179316d9555278
+      DeploymentPreference:
+        Hooks:
+          PreTraffic:
+            Ref: CalculatorValidator
+        Type: AllAtOnce
+      Events:
+        Add:
+          Properties:
+            Method: GET
+            Path: /
+          Type: Api
+      FunctionName: calculator
+      Handler: index.handler
+      Runtime: nodejs6.10
+    Type: AWS::Serverless::Function
+  CalculatorValidator:
+    Properties:
+      CodeUri: s3://sydney-summit-sam/5b9958a0d4f855ead3179316d9555278
+      DeploymentPreference:
+        Enabled: false
+      Environment:
+        Variables:
+          TestVersion:
+            Fn::Sub: ${Calculator.Version}
+      FunctionName: CodeDeployHook_CalculatorValidator
+      Handler: validate.handler
+      Policies:
+      - Statement:
+        - Action:
+          - logs:CreateLogGroup
+          - logs:CreateLogStream
+          - logs:PutLogEvents
+          Effect: Allow
+          Resource:
+            Fn::Sub: arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*
+        - Action:
+          - codedeploy:PutLifecycleEventHookExecutionStatus
+          Effect: Allow
+          Resource:
+            Fn::Sub: arn:aws:codedeploy:${AWS::Region}:${AWS::AccountId}:deploymentgroup:${ServerlessDeploymentApplication}/*
+        Version: '2012-10-17'
+      - Statement:
+        - Action:
+          - lambda:InvokeFunction
+          Effect: Allow
+          Resource:
+            Fn::Sub: arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:calculator
+        Version: '2012-10-17'
+      Runtime: nodejs6.10
+    Type: AWS::Serverless::Function
+Transform: AWS::Serverless-2016-10-31

@@ -1,16 +1,14 @@
 #PRE-SUMMIT
 #0) No Icons On Desktop - except sam-demo
-#1) Chrome with hidden URL - full screen - local app opened. Zoomed in.
+#1) Chrome Zoomed in.
 #2) Everything closed.
 #3) Logitech app
 #4) Docker running
-#5) Terminal open on demo1 - Zoomed In. Open 2nd terminal on demo2!
-#6) Mobile
+#5) VS Code with Terminal open on demo1 - Zoomed In. Open 2nd terminal on demo2!
+#6) Mobile off
 #7) JS code is multiplying
 #8) Go code is adding
 #9) Non-mirror screen + Big one on top of laptop's
-#10) both command text files opened.
-#11) delete both packaged.yaml and calculator compiled binary.
 
 
 # INITIALISE All environments! FROM DEMO1
