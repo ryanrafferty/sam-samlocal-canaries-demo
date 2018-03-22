@@ -1,24 +1,6 @@
 AWSTemplateFormatVersion : '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Resources:
-  Calculator:
-    Type: AWS::Serverless::Function
-    Properties:
-      Runtime: nodejs6.10
-      Handler: index.handler
-      FunctionName: calculator
-      AutoPublishAlias: live
-      DeploymentPreference:
-        Type: AllAtOnce
-        Hooks:
-          PreTraffic: !Ref CalculatorValidator
-      Events:
-        Add:
-          Type: Api
-          Properties:
-            Path: /
-            Method: GET
-
   CalculatorValidator:
     Type: AWS::Serverless::Function
     Properties:
@@ -37,18 +19,15 @@ Resources:
             Action:
               - "codedeploy:PutLifecycleEventHookExecutionStatus"
             Resource:
-              !Sub 'arn:aws:codedeploy:${AWS::Region}:${AWS::AccountId}:deploymentgroup:${ServerlessDeploymentApplication}/*'
+              !Sub 'arn:aws:codedeploy:${AWS::Region}:${AWS::AccountId}:deploymentgroup:*'
         - Version: "2012-10-17"
           Statement:
           - Effect: "Allow"
             Action:
               - "lambda:InvokeFunction"
+              - "lambda:Get*"
+              - "lambda:List*"
             Resource:
-                !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:calculator'
+                !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:*'
       Runtime: nodejs6.10
-      FunctionName: 'CodeDeployHook_CalculatorValidator'
-      DeploymentPreference:
-        Enabled: false
-      Environment:
-        Variables:
-          TestVersion: !Sub "${Calculator.Version}"          
+      FunctionName: 'CodeDeployHook_SamSummitCalculatorValidator'

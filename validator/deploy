@@ -1,0 +1,16 @@
+#!/bin/bash
+
+## Gerardo: Set this to an S3 bucket in your AWS Account
+BUCKET=sydney-summit-sam
+
+# Will use my bucket when I run the code, otherwise will use yours :-)
+if [[ $USER == "adstrick" ]]; then
+    BUCKET=adams-artifacts
+fi
+
+export ARTIFACT_BUCKET=$BUCKET
+echo "Artifact Bucket: $BUCKET"
+
+# Package the Validator
+aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file ../temp/packaged-validator.yaml
+aws cloudformation deploy --template-file ../temp/packaged-validator.yaml --stack-name calculator-validator --capabilities CAPABILITY_IAM

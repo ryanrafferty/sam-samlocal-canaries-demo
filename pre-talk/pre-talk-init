@@ -20,8 +20,21 @@ aws cloudformation delete-stack --stack-name go-calculator
 aws cloudformation wait stack-delete-complete --stack-name calculator
 aws cloudformation wait stack-delete-complete --stack-name go-calculator
 
+## Step 1a: Derive the ARN of the Calculator Validator
+echo "Obtaining the ARN of the Validator..."
+VALIDATOR_ARN=$(aws lambda get-function --function-name CodeDeployHook_SamSummitCalculatorValidator |jq --raw-output '.Configuration.FunctionArn')
+echo "Validator ARN: $VALIDATOR_ARN"
+
+# Step 1b: Update the demo1 template.yaml with the ARN of the validator
+echo "Updating Demo1 Template with Validator ARN..."
+rm -f ../demo1/template.yaml
+cp template-demo1.yaml ../demo1/template.yaml
+UPDATED_VALIDATOR_ARN="${VALIDATOR_ARN//\//\/}"
+sed -i -e "s/##VALIDATORARN##/$UPDATED_VALIDATOR_ARN/g" ../demo1/template.yaml
+rm -f ../demo1/template.yaml-e
+
 ## Step 1: Package + Deploy the API
-echo "Running initial Package + Deploy..."
+echo "Running initial Package + Deploy for Demo1..."
 cd ../demo1
 aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file ../temp/demo1-packaged.yaml
 aws cloudformation deploy --template-file ../temp/demo1-packaged.yaml --stack-name calculator --capabilities CAPABILITY_IAM
@@ -53,5 +66,6 @@ echo "Prep Script Complete"
 echo "   REST API ID: $REST_API_ID"
 echo "   RESOURCE ID: $RESOURCE_ID"
 echo "    Method ARN: $METHOD_ARN"
+echo " Validator ARN: $VALIDATOR_ARN"
 echo "       API URL: $API_URL"
 echo "  CURL Command: curl https://\$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=2"
