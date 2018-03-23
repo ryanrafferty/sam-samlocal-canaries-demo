@@ -15,10 +15,10 @@ echo "Artifact Bucket: $BUCKET"
 
 ## Step 0: Remove any existing CF stacks
 echo "Deleting existing Stack..."
-aws cloudformation delete-stack --stack-name calculator
-aws cloudformation delete-stack --stack-name go-calculator
-aws cloudformation wait stack-delete-complete --stack-name calculator
-aws cloudformation wait stack-delete-complete --stack-name go-calculator
+aws cloudformation delete-stack --stack-name calculator-add
+aws cloudformation delete-stack --stack-name calculator-multiply
+aws cloudformation wait stack-delete-complete --stack-name calculator-add
+aws cloudformation wait stack-delete-complete --stack-name calculator-multiply
 
 ## Step 1a: Derive the ARN of the Calculator Validator
 echo "Obtaining the ARN of the Validator..."
@@ -37,12 +37,12 @@ rm -f ../demo1/template.yaml-e
 echo "Running initial Package + Deploy for Demo1..."
 cd ../demo1
 aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file ../temp/demo1-packaged.yaml
-aws cloudformation deploy --template-file ../temp/demo1-packaged.yaml --stack-name calculator --capabilities CAPABILITY_IAM
+aws cloudformation deploy --template-file ../temp/demo1-packaged.yaml --stack-name calculator-add --capabilities CAPABILITY_IAM
 cd ../pre-talk
 
 ## Step 2: Get URL for the API
 echo "Retrieving the API URL..."
-REST_API_ID=$(aws apigateway get-rest-apis | jq --raw-output '.items[] | select(.name=="calculator").id')
+REST_API_ID=$(aws apigateway get-rest-apis | jq --raw-output '.items[] | select(.name=="calculator-add").id')
 REST_URL="https://$REST_API_ID.execute-api.ap-southeast-2.amazonaws.com/Prod/"
 echo "API URL:"
 echo "$REST_URL"

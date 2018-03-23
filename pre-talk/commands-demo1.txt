@@ -22,7 +22,12 @@
 #3 TEST
 curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
 
-#4 change comment to index.js!!
+#4a. change comment to calculator.go!!
+#4b. compile go binary
+GOOS=linux go build calculator.go
+
+#4c. Change Directory into demo1
+cd ../demo1
 
 #----------------------------
 #5) VS Code with Terminal open on demo1 - Zoomed In. Open 2nd terminal on demo2!
@@ -32,13 +37,13 @@ curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
 echo $ARTIFACT_BUCKET
 
 # 1. Package
-aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file ../temp/packaged.yaml
+aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file ../temp/packaged-demo1.yaml
 
 # 2. Deploy
-aws cloudformation deploy --template-file ../temp/packaged.yaml --stack-name calculator --capabilities CAPABILITY_IAM
+aws cloudformation deploy --template-file ../temp/packaged-demo1.yaml --stack-name calculator-add --capabilities CAPABILITY_IAM
 
 # -----while deploying ---
-#1 show TEMPLATE template.yaml and CODE index.js
+#1 show TEMPLATE template.yaml and CODE calculator.go
 #mention I added some security mechanisims we'll discuss in a second.
 
 #----- after deployed----
@@ -49,13 +54,17 @@ aws cloudformation deploy --template-file ../temp/packaged.yaml --stack-name cal
 #3. TEST.
 curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
 
-#4. Make a change! MISTAKE: SUBSTRACTION.
+#4a. Make a change! MISTAKE: SUBSTRACTION.
+#4b. compile go binary
+GOOS=linux go build calculator.go
 
 #5 Try to deploy
-aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file packaged.yaml
-aws cloudformation deploy --template-file ./packaged.yaml --stack-name calculator --capabilities CAPABILITY_IAM
+aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file packaged-demo1.yaml
+aws cloudformation deploy --template-file ./packaged-demo1.yaml --stack-name calculator-add --capabilities CAPABILITY_IAM
 
-#!!!!!!!!!!!!!!!while deploying BACK TO SLIDES to talk SAFETY!!!!!!!!!!!!!!!!!!
+## -----while deploying --- Wouldn't it be nice if there was a way to prevent?
+#show template.yaml
+#Lambda Traffic Shifting + CodeDeploy + SAM - DEAD SIMPLE
 
 
 #-------after deployed Show failed.
@@ -66,10 +75,12 @@ curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
 #3 Display Cfn rolled back event messages.
 aws cloudformation describe-stack-events --stack-name calculator | grep rollback
 
-#4 Fix code: ADDITION. index.js
+#4a. Fix code: ADDITION. calculator.go
+#4b. compile go binary
+GOOS=linux go build calculator.go
 
 #5. Package and Deploy again.
-aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file packaged.yaml
-aws cloudformation deploy --template-file ./packaged.yaml --stack-name calculator --capabilities CAPABILITY_IAM
+aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file packaged-demo1.yaml
+aws cloudformation deploy --template-file ./packaged-demo1.yaml --stack-name calculator-add --capabilities CAPABILITY_IAM
 
 #!!!!!!!!!!!!!!

@@ -1,6 +1,6 @@
 #!/bin/bash
 
 echo "Fetching API ID for the newly deployed API"
-REST_API_ID=$(aws apigateway get-rest-apis | jq --raw-output '.items[] | select(.name=="calculator").id')
+REST_API_ID=$(aws apigateway get-rest-apis | jq --raw-output '.items[] | select(.name=="calculator-add").id')
 export ID=$REST_API_ID
 echo "   - Retrieved + written to environment variable: \$ID"

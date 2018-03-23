@@ -1,20 +1,28 @@
 AWSTemplateFormatVersion : '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Resources:
-  Calculator:
+  CalculatorAdd:
     Type: AWS::Serverless::Function
     Properties:
-      Runtime: nodejs6.10
-      Handler: index.handler
-      FunctionName: calculator
-      AutoPublishAlias: live
-      DeploymentPreference:
-        Type: AllAtOnce
-        Hooks:
-          PreTraffic: ##VALIDATORARN##
+      Runtime: go1.x
+      Handler: calculator
+      FunctionName: calculator-add
       Events:
         Add:
           Type: Api
           Properties:
             Path: /
             Method: GET
+      AutoPublishAlias: live
+      DeploymentPreference:
+        Type: AllAtOnce
+        Hooks:
+          PreTraffic: ##VALIDATORARN##
+
+#     DeploymentPreference:
+#       Type: Linear10PercentEvery10Minutes
+#       Hooks:       
+#         PreTraffic: !Ref ValidatorFunction
+#         PostTraffic: !Ref NextStageHook
+#       Alarms: 
+#         !Ref: RollbackAlarm

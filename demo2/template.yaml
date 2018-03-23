@@ -1,12 +1,12 @@
 AWSTemplateFormatVersion : '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Resources:
-  GoCalculator:
+  CalculatorMultiply:
     Type: AWS::Serverless::Function
     Properties:
-      Runtime: go1.x
-      Handler: calculator
-      FunctionName: go-calculator
+      Runtime: nodejs6.10
+      Handler: index.handler
+      FunctionName: calculator-multiply
       AutoPublishAlias: live
       Events:
           Add:

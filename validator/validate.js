@@ -5,9 +5,11 @@ const codedeploy = new aws.CodeDeploy();
 const lambda = new aws.Lambda();
 
 // Payload to pass to the newly deployed lambda function
+const lambdaName = "calculator-add";
 const leftParam = 1.25;
 const rightParam = 2.25;
 const expectedResult = leftParam + rightParam;
+const expectedResult2 = leftParam * rightParam;
 
 const payload = {
     "resource": "/",
@@ -65,7 +67,7 @@ exports.handler = (event, context, callback) => {
     } else {
         // Derive it by getting the highest version number from the lambda...
         console.log("Will derive Lambda Test Version");
-        lambdaVersionPromise = lambda.listVersionsByFunction({ FunctionName: "calculator",MaxItems: 512 })
+        lambdaVersionPromise = lambda.listVersionsByFunction({ FunctionName:lambdaName ,MaxItems: 512 })
                                 .promise()
                                 .then(data => {
                                     if (data.Versions) {
@@ -116,7 +118,7 @@ exports.handler = (event, context, callback) => {
             res = parseFloat(body);
         }
 
-        testSuccess = (res === expectedResult);
+        testSuccess = (res === expectedResult) || (res === expectedResult2);
         console.log("Expected:", expectedResult, ", Got:", res, ", Result:", testSuccess ? "PASS" : "FAIL");
     }).catch( err => {
         console.log("Error when validating", err);

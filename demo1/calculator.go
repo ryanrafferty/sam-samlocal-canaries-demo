@@ -4,11 +4,12 @@ import (
 	"context"
 	"fmt"
 	"strconv"
-	// ""
+
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
+// queryParamAsNumber Get the specified QueryParam and return it as a Float64
 func queryParamAsNumber(name string, event events.APIGatewayProxyRequest, defaultVal float64) float64 {
 	result := defaultVal
 	val := event.QueryStringParameters[name]
@@ -22,13 +23,19 @@ func queryParamAsNumber(name string, event events.APIGatewayProxyRequest, defaul
 	return result
 }
 
+// HandleRequest Process the API Request
 func HandleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	left := queryParamAsNumber("left", request, 0)
 	right := queryParamAsNumber("right", request, 0)
 	result := left * right
-	return events.APIGatewayProxyResponse{200, make(map[string]string), strconv.FormatInt(int64(result), 10), false}, nil
+	return events.APIGatewayProxyResponse{
+		StatusCode:      200,
+		Headers:         make(map[string]string),
+		Body:            strconv.FormatInt(int64(result), 10),
+		IsBase64Encoded: false}, nil
 }
 
+// main Lambda EntryPoint
 func main() {
 	lambda.Start(HandleRequest)
 }
