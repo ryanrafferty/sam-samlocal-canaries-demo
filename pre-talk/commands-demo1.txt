@@ -4,71 +4,72 @@
 #2) Everything closed.
 #3) Logitech app
 #4) Docker running
-#5) VS Code with Terminal open on demo1 - Zoomed In. Open 2nd terminal on demo2!
+
 #6) Mobile off
 #7) JS code is multiplying
 #8) Go code is adding
 #9) Non-mirror screen + Big one on top of laptop's
+#10) Adjust Command+Option+8 Zoom level
 
-# from DEPLOY -- ONLY ONCE?
+
+#------INITIALISE-----
+#1 from VALIDATOR -- ONLY ONCE?
 . ./deploy
 
-# from pre-talk
+#2 from pre-talk
 . ./pre-talk-init
 
-#TEST
+#3 TEST
 curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
 
-#-------------------------
-#DEMO 1:
-#show variable and local files.
+#4 change comment to index.js!!
+
+#----------------------------
+#5) VS Code with Terminal open on demo1 - Zoomed In. Open 2nd terminal on demo2!
+
+#-----DEMO 1 FROM demo1/--------------------
+#show artifact
 echo $ARTIFACT_BUCKET
-ls
 
 # 1. Package
-
 aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file ../temp/packaged.yaml
 
 # 2. Deploy
-
 aws cloudformation deploy --template-file ../temp/packaged.yaml --stack-name calculator --capabilities CAPABILITY_IAM
 
-# 3. -----while deploying --- show 2 commands and open 2nd temindal and show CODE -
-index.js
-template OR validator
+# -----while deploying ---
+#1 show TEMPLATE template.yaml and CODE index.js
 #mention I added some security mechanisims we'll discuss in a second.
 
-# 4. ---When done: collect details about APIGW
+#----- after deployed----
+#1 Show CLI
+#2 Say collect API ID.
 . ./get-api-id
 
-#5. Check code with Curl. Make a change! SUBSTRACTION.
+#3. TEST.
 curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
 
-MAKE A MISTAKE!!!
-nano index.js
-Ctrl + o
-Ctrl + x
+#4. Make a change! MISTAKE: SUBSTRACTION.
 
+#5 Try to deploy
 aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file packaged.yaml
 aws cloudformation deploy --template-file ./packaged.yaml --stack-name calculator --capabilities CAPABILITY_IAM
 
+#!!!!!!!!!!!!!!!while deploying BACK TO SLIDES to talk SAFETY!!!!!!!!!!!!!!!!!!
 
-#—— BACK TO SLIDES to talk SAFETY
 
-# 5. Test app
+#-------after deployed Show failed.
+#1 CLI failed.
+#2 Test app - Still multiplying!
 curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
 
-# 5. Display Cfn rolled back event messages.
-# Describe cloudformation events greped to show failure.
+#3 Display Cfn rolled back event messages.
 aws cloudformation describe-stack-events --stack-name calculator | grep rollback
-curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
 
+#4 Fix code: ADDITION. index.js
 
-#—- Make a change: ADDITION.
-nano index.js
-Ctrl + o
-Ctrl + x
-
-# 6. Package and Deploy again.
+#5. Package and Deploy again.
 aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file packaged.yaml
 aws cloudformation deploy --template-file ./packaged.yaml --stack-name calculator --capabilities CAPABILITY_IAM
+
+#!!!!!!!!!!!!!!

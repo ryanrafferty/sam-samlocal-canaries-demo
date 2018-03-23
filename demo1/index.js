@@ -19,7 +19,7 @@ exports.handler = (event, context, callback) => {
     } catch(error) {
         callback(error, {
             statusCode: 500,
-            body: "Unexpected faillure processing your calculation"
+            body: "Unexpected faillure processing your calculation" 
         });
     }
 }
