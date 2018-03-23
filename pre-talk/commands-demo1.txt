@@ -10,10 +10,14 @@
 #8) Go code is adding
 #9) Non-mirror screen + Big one on top of laptop's
 
+# from DEPLOY -- ONLY ONCE?
+. ./deploy
 
-# INITIALISE All environments! FROM DEMO1
-. ../pre-talk/pre-talk-init
+# from pre-talk
+. ./pre-talk-init
 
+#TEST
+curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
 
 #-------------------------
 #DEMO 1:
