@@ -1,13 +1,13 @@
 #PRE-SUMMIT
 #0) No Icons On Desktop - except sam-demo
-#1) Chrome Zoomed in.
+#1) Chrome Zoomed in - http://127.0.0.1:3000/?left=4&right=2
 #2) Everything closed.
 #3) Logitech app
 #4) Docker running
-
+#5) Commands opened on Atom at bottom screen
 #6) Mobile off
-#7) JS code is multiplying
-#8) Go code is adding
+#7) Go code is multiplying
+#8) JS code is adding
 #9) Non-mirror screen + Big one on top of laptop's
 #10) Adjust Command+Option+8 Zoom level
 

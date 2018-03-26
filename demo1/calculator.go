@@ -9,7 +9,7 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
-// queryParamAsNumber Get the specified QueryParam and return it as a Float64
+// queryParamAsNumber get the specified QueryParam and return it as a Float64
 func queryParamAsNumber(name string, event events.APIGatewayProxyRequest, defaultVal float64) float64 {
 	result := defaultVal
 	val := event.QueryStringParameters[name]

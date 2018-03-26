@@ -36,6 +36,7 @@ rm -f ../demo1/template.yaml-e
 ## Step 1: Package + Deploy the API
 echo "Running initial Package + Deploy for Demo1..."
 cd ../demo1
+GOOS=linux go build calculator.go
 aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file ../temp/demo1-packaged.yaml
 aws cloudformation deploy --template-file ../temp/demo1-packaged.yaml --stack-name calculator-add --capabilities CAPABILITY_IAM
 cd ../pre-talk
