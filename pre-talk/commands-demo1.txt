@@ -31,6 +31,8 @@ GOOS=linux go build calculator.go
 
 #5) VS Code with Terminal open on demo1 - Zoomed In. Open 2nd terminal on demo2!
 
+
+
 #-----DEMO 1 FROM demo1/--------------------
 #show artifact
 echo $ARTIFACT_BUCKET
