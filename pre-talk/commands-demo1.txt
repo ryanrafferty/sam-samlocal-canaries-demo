@@ -22,14 +22,13 @@
 #3 TEST
 curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
 
-#4a. change comment to calculator.go!!
-#4b. compile go binary
-GOOS=linux go build calculator.go
-
-#4c. Change Directory into demo1
+#4a. Change Directory into demo1
 cd ../demo1
 
-#----------------------------
+#4b. change comment to calculator.go!!
+#4c. compile go binary
+GOOS=linux go build calculator.go
+
 #5) VS Code with Terminal open on demo1 - Zoomed In. Open 2nd terminal on demo2!
 
 #-----DEMO 1 FROM demo1/--------------------
@@ -38,8 +37,6 @@ echo $ARTIFACT_BUCKET
 
 # 1. Package
 aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file ../temp/packaged-demo1.yaml
-
-# 2. Deploy
 aws cloudformation deploy --template-file ../temp/packaged-demo1.yaml --stack-name calculator-add --capabilities CAPABILITY_IAM
 
 # -----while deploying ---
@@ -55,12 +52,11 @@ aws cloudformation deploy --template-file ../temp/packaged-demo1.yaml --stack-na
 curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
 
 #4a. Make a change! MISTAKE: SUBSTRACTION.
-#4b. compile go binary
-GOOS=linux go build calculator.go
 
 #5 Try to deploy
-aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file packaged-demo1.yaml
-aws cloudformation deploy --template-file ./packaged-demo1.yaml --stack-name calculator-add --capabilities CAPABILITY_IAM
+GOOS=linux go build calculator.go
+aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file ../temp/packaged-demo1.yaml
+aws cloudformation deploy --template-file ../temp/packaged-demo1.yaml --stack-name calculator-add --capabilities CAPABILITY_IAM
 
 ## -----while deploying --- Wouldn't it be nice if there was a way to prevent?
 #show template.yaml
@@ -73,14 +69,14 @@ aws cloudformation deploy --template-file ./packaged-demo1.yaml --stack-name cal
 curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
 
 #3 Display Cfn rolled back event messages.
-aws cloudformation describe-stack-events --stack-name calculator | grep rollback
+aws cloudformation describe-stack-events --stack-name calculator-add | grep rollback
 
 #4a. Fix code: ADDITION. calculator.go
 #4b. compile go binary
 GOOS=linux go build calculator.go
 
 #5. Package and Deploy again.
-aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file packaged-demo1.yaml
-aws cloudformation deploy --template-file ./packaged-demo1.yaml --stack-name calculator-add --capabilities CAPABILITY_IAM
+aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file ../temp/packaged-demo1.yaml
+aws cloudformation deploy --template-file ../temp/packaged-demo1.yaml --stack-name calculator-add --capabilities CAPABILITY_IAM
 
 #!!!!!!!!!!!!!!
