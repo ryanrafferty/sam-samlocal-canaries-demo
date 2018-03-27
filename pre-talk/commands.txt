@@ -4,13 +4,15 @@ curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
 GOOS=linux go build calculator.go
 
 ----DEMO1
+echo $ARTIFACT_BUCKET
 
-GOOS=linux go build calculator.go
 aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file ../temp/packaged-demo1.yaml
 aws cloudformation deploy --template-file ../temp/packaged-demo1.yaml --stack-name calculator-add --capabilities CAPABILITY_IAM
 
 . ./get-api-id
 curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
+
+GOOS=linux go build calculator.go
 
 aws cloudformation describe-stack-events --stack-name calculator-add | grep rollback
 
@@ -22,12 +24,17 @@ sam —-version
 sam validate --template template-js.yaml
 
 sam local start-api
+http://127.0.0.1:3000/?left=4&right=2
 
 sam package --template-file template-js.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file ../temp/packaged-demo2.yaml
 sam deploy --template-file ../temp/packaged-demo2.yaml --stack-name calculator-multiply --capabilities CAPABILITY_IAM
 
 sam local generate-event api --method GET --resource "/" --path "/?left=4&right=2"
 sam local invoke "CalculatorMultiply" -e request.json
+
+#breakpoint
+sam local invoke "CalculatorMultiply" -e request.json -d 5858
+#degug
 
 . ./get-lambda-arn
 
