@@ -7,6 +7,7 @@ Resources:
       Runtime: go1.x
       Handler: calculator
       FunctionName: calculator-add
+      AutoPublishAlias: live
       Events:
         Add:
           Type: Api
@@ -18,18 +19,19 @@ Resources:
 
 
 
-
-            
-      AutoPublishAlias: live
-      DeploymentPreference:
-        Type: AllAtOnce
-        Hooks:
-          PreTraffic: ##VALIDATORARN##
-
 #     DeploymentPreference:
-#       Type: Linear10PercentEvery10Minutes
+#       Type: Canary10Percent5Minutes, Linear10PercentEvery1Minute, etc.
 #       Hooks:       
 #         PreTraffic: !Ref ValidatorFunction
 #         PostTraffic: !Ref NextStageHook
 #       Alarms: 
 #         !Ref: RollbackAlarm
+
+
+
+
+      DeploymentPreference:
+        Type: AllAtOnce
+        Hooks:
+          PreTraffic: ##VALIDATORARN##
+

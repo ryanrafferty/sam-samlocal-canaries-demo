@@ -1,0 +1,11 @@
+----DEMO1
+echo $ARTIFACT_BUCKET
+
+GOOS=linux go build calculator.go
+sam package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file ../temp/packaged-demo1.yaml
+sam deploy --template-file ../temp/packaged-demo1.yaml --stack-name calculator-add --capabilities CAPABILITY_IAM
+
+. ./get-api-id
+curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
+
+aws cloudformation describe-stack-events --stack-name calculator-add | grep rollback
