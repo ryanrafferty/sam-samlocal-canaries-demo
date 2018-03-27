@@ -27,7 +27,12 @@ func queryParamAsNumber(name string, event events.APIGatewayProxyRequest, defaul
 func HandleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	left := queryParamAsNumber("left", request, 0)
 	right := queryParamAsNumber("right", request, 0)
+
+	// Should be Adding
 	result := left + right
+
+	// fmt.Println("Result defined")
+
 	return events.APIGatewayProxyResponse{
 		StatusCode:      200,
 		Headers:         make(map[string]string),
