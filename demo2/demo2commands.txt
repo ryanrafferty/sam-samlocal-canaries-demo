@@ -1,7 +1,8 @@
-----Demo 2
+----End of Demo 1
 curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
+aws cloudformation describe-stack-events --stack-name calculator-add | grep rollback
 
----No Internet.
+---Demo 2: No Internet.
 sam --version
 sam validate --template template-js.yaml
 

@@ -11,7 +11,7 @@ exports.handler = (event, context, callback) => {
         let right = queryParamAsNumber("right", event, 0);
 
         // Should be Multiplying
-        let result = left + right; 
+        let result = left * right; 
         
 
         callback(null, {
