@@ -118,7 +118,7 @@ exports.handler = (event, context, callback) => {
             res = parseFloat(body);
         }
 
-        testSuccess = (res === expectedResult) || (res === expectedResult2);
+        testSuccess = (res == expectedResult) || (res == expectedResult2);
         console.log("Expected:", expectedResult, ", Got:", res, ", Result:", testSuccess ? "PASS" : "FAIL");
     }).catch( err => {
         console.log("Error when validating", err);
