@@ -23,13 +23,13 @@ func queryParamAsNumber(name string, event events.APIGatewayProxyRequest, defaul
 	return result
 }
 
-// HandleRequest Process the API Request
+// HandleRequest process the API Request
 func HandleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	left := queryParamAsNumber("left", request, 0)
 	right := queryParamAsNumber("right", request, 0)
 
 	// Should be Adding
-	result := left + right
+	result := left * right
 
 	// fmt.Println("Result defined")
 
