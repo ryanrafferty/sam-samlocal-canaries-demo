@@ -6,8 +6,8 @@ const lambda = new aws.Lambda();
 
 // Payload to pass to the newly deployed lambda function
 const lambdaName = "calculator-add";
-const leftParam = 1.25;
-const rightParam = 2.25;
+const leftParam = 3;
+const rightParam = 4;
 const expectedResult = leftParam + rightParam;
 const expectedResult2 = leftParam * rightParam;
 
