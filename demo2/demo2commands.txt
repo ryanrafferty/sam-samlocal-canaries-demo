@@ -1,4 +1,7 @@
 ----Demo 2
+curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
+
+---No Internet.
 sam —-version
 sam validate --template template-js.yaml
 
