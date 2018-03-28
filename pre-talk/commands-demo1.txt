@@ -32,53 +32,10 @@ GOOS=linux go build calculator.go
 #5) VS Code with Terminal open on demo1 - Zoomed In. Open 2nd terminal on demo2!
 
 
-
-#-----DEMO 1 FROM demo1/--------------------
-#show artifact
-echo $ARTIFACT_BUCKET
-
-# 1. Package
-aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file ../temp/packaged-demo1.yaml
-aws cloudformation deploy --template-file ../temp/packaged-demo1.yaml --stack-name calculator-add --capabilities CAPABILITY_IAM
-
-# -----while deploying ---
-#1 show TEMPLATE template.yaml and CODE calculator.go
-#mention I added some security mechanisims we'll discuss in a second.
-
-#----- after deployed----
-#1 Show CLI
-#2 Say collect API ID.
-. ./get-api-id
-
-#3. TEST.
-curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
-
-#4a. Make a change! MISTAKE: SUBSTRACTION.
-
-#5 Try to deploy
-GOOS=linux go build calculator.go
-aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file ../temp/packaged-demo1.yaml
-aws cloudformation deploy --template-file ../temp/packaged-demo1.yaml --stack-name calculator-add --capabilities CAPABILITY_IAM
-
-## -----while deploying --- Wouldn't it be nice if there was a way to prevent?
-#show template.yaml
-#Lambda Traffic Shifting + CodeDeploy + SAM - DEAD SIMPLE
-
-
-#-------after deployed Show failed.
-#1 CLI failed.
-#2 Test app - Still multiplying!
-curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
-
-#3 Display Cfn rolled back event messages.
-aws cloudformation describe-stack-events --stack-name calculator-add | grep rollback
-
-#4a. Fix code: ADDITION. calculator.go
-#4b. compile go binary
-GOOS=linux go build calculator.go
-
-#5. Package and Deploy again.
-aws cloudformation package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file ../temp/packaged-demo1.yaml
-aws cloudformation deploy --template-file ../temp/packaged-demo1.yaml --stack-name calculator-add --capabilities CAPABILITY_IAM
-
-#!!!!!!!!!!!!!!
+## -----while deploying fail --- Wouldn't it be nice if there was a way to prevent?
+I mentioned earlier easily implement a safety mechanism to prevent bad code 
+from getting deployed. -> Canary Releases for Lambda Deployments.
+It works by using AWS CodeDeploy, services that automates deployments, and in the 
+serverless case it leverages Lambda Alias Traffic Shifting, feature that allows to 
+load balance between two different versions of your Lambda function.
+And surpirse, surprise, there's a DEAD simple way to implement this with SAM.

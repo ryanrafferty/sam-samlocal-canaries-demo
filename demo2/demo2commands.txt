@@ -1,6 +1,4 @@
 ----Demo 2
-curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
-
 sam —-version
 sam validate --template template-js.yaml
 
@@ -37,7 +35,7 @@ aws lambda add-permission                                               \
 aws apigateway create-deployment                                        \
     --rest-api-id $API_ID                                               \
     --stage-name Prod                                                   \
-    --canary-settings '{ "percentTraffic": 10, "useStageCache":false}'
+    --canary-settings '{ "percentTraffic": 20, "useStageCache":false}'
 
 curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
 
