@@ -1,24 +1,70 @@
+
+
+
+
+
+
 ----End of Demo 1
 curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
 aws cloudformation describe-stack-events --stack-name calculator-add | grep rollback
 
----Demo 2: No Internet.
+
+
+
+
+
+
+--- Start Demo 2
+---- Internet Off
 sam --version
 sam validate --template template-js.yaml
+
+
+
+
+
 
 sam local start-api
 http://127.0.0.1:3000/?left=4&right=2
 
+
+
+
+
+
+---- Internet On
 sam package --template-file template-js.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file ../temp/packaged-demo2.yaml
 sam deploy --template-file ../temp/packaged-demo2.yaml --stack-name calculator-multiply --capabilities CAPABILITY_IAM
 
+
+
+
+
+
+---- Internet Off
 sam local generate-event api --method GET --resource "/" --path "/?left=4&right=2"
 sam local invoke "CalculatorMultiply" -e request.json
 
+
+
+
+
+
 sam local invoke "CalculatorMultiply" -e request.json -d 5858
 
+
+
+
+
+
 ---- Canary releases for APIGW.
+---- Internet On
 . ./get-lambda-arn
+
+
+
+
+
 
 aws apigateway put-integration                                          \
     --rest-api-id $API_ID                                               \
@@ -28,6 +74,11 @@ aws apigateway put-integration                                          \
     --integration-http-method POST                                      \
     --uri arn:aws:apigateway:ap-southeast-2:lambda:path/2015-03-31/functions/$LAMBDA_ALIAS_ARN/invocations
 
+
+
+
+
+
 aws lambda add-permission                                               \
     --statement-id 1                                                    \
     --function-name calculator-multiply                                 \
@@ -36,24 +87,47 @@ aws lambda add-permission                                               \
     --source-arn $METHOD_ARN                                            \
     --qualifier live
 
+
+
+
+
+
+
 aws apigateway create-deployment                                        \
     --rest-api-id $API_ID                                               \
     --stage-name Prod                                                   \
     --canary-settings '{ "percentTraffic": 20, "useStageCache":false}'
 
+
+
+
+
+
+
 curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
+
+
+
+
+
+
 
 aws apigateway update-stage                                              \
     --rest-api-id "$API_ID"                                              \
     --stage-name 'Prod'                                                  \
     --patch-operations '[{
-        "op": "replace",
-        "value": "0.0",
-        "path": "/canarySettings/percentTraffic"
-      }, {
         "op": "copy",
         "from": "/canarySettings/deploymentId",
         "path": "/deploymentId"
       }]'
 
+
+
+
+
+
 curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
+
+
+
+

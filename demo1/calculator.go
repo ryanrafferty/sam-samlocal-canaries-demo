@@ -28,7 +28,7 @@ func HandleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (
 	left := queryParamAsNumber("left", request, 0)
 	right := queryParamAsNumber("right", request, 0)
 
-	// Should be Adding
+	// MISTAKE! Should be Adding
 	result := left * right
 
 	// fmt.Println("Result defined")
