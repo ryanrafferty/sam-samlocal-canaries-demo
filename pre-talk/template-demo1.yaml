@@ -19,13 +19,18 @@ Resources:
 
 
 
+
+
 #     DeploymentPreference:
 #       Type: Canary10Percent5Minutes, Linear10PercentEvery1Minute, etc.
+#       Alarms: 
+#         !Ref: RollbackAlarm
 #       Hooks:       
 #         PreTraffic: !Ref ValidatorFunction
 #         PostTraffic: !Ref NextStageHook
-#       Alarms: 
-#         !Ref: RollbackAlarm
+
+
+
 
 
 

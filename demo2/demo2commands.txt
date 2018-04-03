@@ -13,8 +13,7 @@ aws cloudformation describe-stack-events --stack-name calculator-add | grep roll
 
 
 
-
---- Start Demo 2
+--- Start Demo 2 / cd ../demo2
 ---- Internet Off
 sam --version
 sam validate --template template-js.yaml
@@ -24,8 +23,10 @@ sam validate --template template-js.yaml
 
 
 
+
 sam local start-api
 http://127.0.0.1:3000/?left=4&right=2
+
 
 
 
@@ -41,6 +42,7 @@ sam deploy --template-file ../temp/packaged-demo2.yaml --stack-name calculator-m
 
 
 
+
 ---- Internet Off
 sam local generate-event api --method GET --resource "/" --path "/?left=4&right=2"
 sam local invoke "CalculatorMultiply" -e request.json
@@ -50,7 +52,9 @@ sam local invoke "CalculatorMultiply" -e request.json
 
 
 
+
 sam local invoke "CalculatorMultiply" -e request.json -d 5858
+
 
 
 
@@ -74,11 +78,6 @@ aws apigateway put-integration                                          \
     --integration-http-method POST                                      \
     --uri arn:aws:apigateway:ap-southeast-2:lambda:path/2015-03-31/functions/$LAMBDA_ALIAS_ARN/invocations
 
-
-
-
-
-
 aws lambda add-permission                                               \
     --statement-id 1                                                    \
     --function-name calculator-multiply                                 \
@@ -93,16 +92,11 @@ aws lambda add-permission                                               \
 
 
 
+
 aws apigateway create-deployment                                        \
     --rest-api-id $API_ID                                               \
     --stage-name Prod                                                   \
     --canary-settings '{ "percentTraffic": 20, "useStageCache":false}'
-
-
-
-
-
-
 
 curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
 
@@ -120,11 +114,6 @@ aws apigateway update-stage                                              \
         "from": "/canarySettings/deploymentId",
         "path": "/deploymentId"
       }]'
-
-
-
-
-
 
 curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
 

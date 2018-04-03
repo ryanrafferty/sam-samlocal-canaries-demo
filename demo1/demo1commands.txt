@@ -1,5 +1,27 @@
+----Init
+Docker
+Go Multiplying, JS Adding
+. ./pre-talk-init
+terminal in demo1, and terminal in demo2
+curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
+
+
+
+
+
+
+
+
+
+
+
 
 curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
+
+
+
+
+
 
 GOOS=linux go build calculator.go
 sam package --template-file template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file ../temp/packaged-demo1.yaml
