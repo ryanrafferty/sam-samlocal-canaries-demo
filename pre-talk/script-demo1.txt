@@ -24,6 +24,8 @@
 ## -----while deploying --- Wouldn't it be nice if there was a way to prevent?
 I mentioned earlier easily implement a safety mechanism to prevent bad code 
 from getting deployed. -> Canary Releases for Lambda Deployments.
+Canary Deployments is
+
 It works by using AWS CodeDeploy, services that automates deployments, and in the 
 serverless case it leverages Lambda Alias Traffic Shifting, feature that allows to 
 load balance between two different versions of your Lambda function.
