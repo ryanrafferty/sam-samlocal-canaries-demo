@@ -2,7 +2,7 @@
 
 function queryParamAsNumber(name, event, defaultVal) {
     let val = event.queryStringParameters[name];
-    return val ? parseFloat(val) : defaultVal;
+    return val ? parseFloat(val[0]) : defaultVal;
 }
 
 exports.handler = (event, context, callback) => {
@@ -11,7 +11,7 @@ exports.handler = (event, context, callback) => {
         let right = queryParamAsNumber("right", event, 0);
 
         // Intentional Mistake: Should be Multiplying
-        let result = left + right; 
+        let result = (left + right).toString(); 
         
 
         callback(null, {
