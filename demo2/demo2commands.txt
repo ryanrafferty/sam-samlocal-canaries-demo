@@ -61,7 +61,6 @@ sam local invoke "CalculatorMultiply" -e request.json -d 5858
 
 
 ---- Canary releases for APIGW.
----- Internet On
 . ./get-lambda-arn
 
 
