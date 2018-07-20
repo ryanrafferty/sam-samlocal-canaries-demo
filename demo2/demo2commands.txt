@@ -22,8 +22,8 @@ sam validate --template template-js.yaml
 
 
 
-
-sam local start-api
+--- Internet Off!!
+sam local start-api --skip-pull-image
 http://127.0.0.1:3000/?left=4&right=2
 
 
@@ -32,7 +32,7 @@ http://127.0.0.1:3000/?left=4&right=2
 
 
 
-
+--- Internet On
 sam package --template-file template-js.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file ../temp/packaged-demo2.yaml
 sam deploy --template-file ../temp/packaged-demo2.yaml --stack-name calculator-multiply --capabilities CAPABILITY_IAM
 
@@ -42,9 +42,9 @@ sam deploy --template-file ../temp/packaged-demo2.yaml --stack-name calculator-m
 
 
 
-
+--- Internet Off!!
 sam local generate-event api --method GET --resource "/" --path "/?left=4&right=2"
-sam local invoke "CalculatorMultiply" -e request.json
+sam local invoke "CalculatorMultiply" -e request.json --skip-pull-image
 
 
 
@@ -52,14 +52,14 @@ sam local invoke "CalculatorMultiply" -e request.json
 
 
 
-sam local invoke "CalculatorMultiply" -e request.json -d 5858
+sam local invoke "CalculatorMultiply" -e request.json -d 5858 --skip-pull-image
 
 
 
 
 
 
-
+--- Internet On
 ---- Canary releases for APIGW.
 . ./get-lambda-arn
 
