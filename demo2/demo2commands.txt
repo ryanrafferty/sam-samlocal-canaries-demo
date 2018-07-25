@@ -21,6 +21,7 @@ sam validate --template template-js.yaml
 
 
 --- Internet Off!!
+ping 8.8.8.8
 sam --version
 cd ..
 sam init --runtime dotnetcore2.0
