@@ -3,6 +3,8 @@ packaged.yaml
 # dependencies
 node_modules
 node_modules/
+sam-app
+sam-app/
 
 # misc
 .vscode
