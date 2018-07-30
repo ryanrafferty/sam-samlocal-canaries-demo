@@ -2,7 +2,7 @@
 Docker
 Go Multiplying, JS Adding
 . ./pre-talk-init
-terminal in demo1, and terminal in demo2
+delete sam-app
 curl https://$ID.execute-api.ap-southeast-2.amazonaws.com/Prod/?left=4&right=3
 
 
