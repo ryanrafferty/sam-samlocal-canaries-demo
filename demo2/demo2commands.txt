@@ -15,14 +15,14 @@ aws cloudformation describe-stack-events --stack-name calculator-add | grep roll
 
 --- Start Demo 2 / cd ../demo2
 cd ../demo2
+sam --version
 sam validate --template template-js.yaml
 
 
 
 
---- Internet Off!!
-ping 8.8.8.8
-sam --version
+
+
 cd ..
 sam init --runtime dotnetcore2.0
 
@@ -39,7 +39,8 @@ sam local start-lambda
 
 
 
---- Internet On
+
+
 sam package --template-file template-js.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file ../temp/packaged-demo2.yaml
 sam deploy --template-file ../temp/packaged-demo2.yaml --stack-name calculator-multiply --capabilities CAPABILITY_IAM
 
@@ -49,7 +50,7 @@ sam deploy --template-file ../temp/packaged-demo2.yaml --stack-name calculator-m
 
 
 
---- Internet Off!!
+
 sam local generate-event api --method GET --resource "/" --path "/?left=4&right=2"
 sam local invoke "CalculatorMultiply" -e request.json --skip-pull-image
 
@@ -68,7 +69,7 @@ sam local invoke "CalculatorMultiply" -e request.json -d 5858 --skip-pull-image
 
 
 
---- Internet On
+
 ---- Canary releases for APIGW.
 . ./get-lambda-arn
 
