@@ -11,9 +11,10 @@ Requirements:
 * The AWS SAM CLI installed in your machine
 
 Set up the demo:
-1.	Write your S3 bucket name in line 5 of the pre-talk-init script found in the pre-talk folder.
-2.	Run the deploy script from the validator folder -> this will create the validator function. (you only do this once)
-3.	Run the pre-talk-init script from the pre-talk folder -> this will create/reset the starting app. (you can do this many times to run the demo many times)
+1. Write your S3 bucket name in line 5 of the pre-talk-init script found in the pre-talk folder.
+2. Write your S3 bucket name in line 4 of the deploy script found in the validator folder.
+2. Run the deploy script from the validator folder -> this will create the validator function. (you only do this once)
+3. Run the pre-talk-init script from the pre-talk folder -> this will create/reset the starting app. (you can do this many times to run the demo many times)
 
 Then simply follow the commands text files found on each demo's folder. You can see how I did it by splitting my IDE screen here: https://www.youtube.com/watch?v=UIp6sLyvoC0 
 
