@@ -29,5 +29,5 @@ Resources:
               - "lambda:List*"
             Resource:
                 !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:*'
-      Runtime: nodejs6.10
+      Runtime: nodejs12.x
       FunctionName: 'CodeDeployHook_SamSummitCalculatorValidator'
