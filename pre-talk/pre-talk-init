@@ -2,11 +2,11 @@
 
 
 ## Gerardo: Set this to an S3 bucket in your AWS Account
-BUCKET=sydney-summit-sam
+BUCKET=schwiftysam
 
 # Will use my bucket when I run the code, otherwise will use yours :-)
-if [[ $USER == "adstrick" ]]; then
-    BUCKET=adams-artifacts
+if [[ $USER == "RyanRafferty" ]]; then
+    BUCKET=schwiftysam
 fi
 
 export ARTIFACT_BUCKET=$BUCKET
